@@ -49,20 +49,20 @@ const updateDoctorProfile = async (req, res) => {
 };
 
 // Admin: approve doctor
-const approveDoctor = async (req, res) => {
-    try {
-        const doctor = await User.findById(req.params.id);
-        if (!doctor || doctor.role !== "doctor") {
-            return res.status(404).json({ success: false, message: "Doctor not found" });
-        }
+// const approveDoctor = async (req, res) => {
+//     try {
+//         const doctor = await User.findById(req.params.id);
+//         if (!doctor || doctor.role !== "doctor") {
+//             return res.status(404).json({ success: false, message: "Doctor not found" });
+//         }
 
-        doctor.isApproved = true;
-        await doctor.save();
+//         doctor.isApproved = true;
+//         await doctor.save();
 
-        res.json({ success: true, message: "Doctor approved successfully", doctor });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
+//         res.json({ success: true, message: "Doctor approved successfully", doctor });
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: error.message });
+//     }
+// };
 
-module.exports = { getDoctors, updateDoctorProfile, approveDoctor, getMyDoctorProfile };
+module.exports = { getDoctors, updateDoctorProfile, getMyDoctorProfile };
