@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.js");
+const doctorRoutes = require("./routes/doctorRoutes.js");
 // const { errorHandler } = require("./middlewares/errorMiddleware.js");
 
 dotenv.config();
@@ -29,10 +30,11 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/doctors", doctorRoutes);
 
 // Test API
 app.get("/", (req, res) => {
-  res.send("✅ Healthcare API is running...");
+  res.send("Healthcare API is running...");
 });
 
 // Error handler
@@ -40,5 +42,5 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
