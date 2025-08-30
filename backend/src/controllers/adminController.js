@@ -1,7 +1,6 @@
 const User = require("../models/User.js");
 const Appointment = require("../models/Appointment.js");
 
-// Get all doctors (filter by approval status if needed)
 const getAllDoctors = async (req, res) => {
     try {
         const { status } = req.query;
@@ -17,7 +16,6 @@ const getAllDoctors = async (req, res) => {
     }
 };
 
-// Approve doctor
 const approveDoctor = async (req, res) => {
     try {
         const doctor = await User.findById(req.params.id);
@@ -34,7 +32,6 @@ const approveDoctor = async (req, res) => {
     }
 };
 
-// Reject doctor
 const rejectDoctor = async (req, res) => {
     try {
         const doctor = await User.findById(req.params.id);
@@ -51,7 +48,6 @@ const rejectDoctor = async (req, res) => {
     }
 };
 
-// Get all patients
 const getAllPatients = async (req, res) => {
     try {
         const patients = await User.find({ role: "patient" }).select("-password");
@@ -61,7 +57,42 @@ const getAllPatients = async (req, res) => {
     }
 };
 
-// Get all appointments
+const getPatientById = async (req, res) => {
+    try {
+        const patient = await User.findOne({ _id: req.params.id, role: "patient" }).select("-password");
+        if (!patient) {
+            return res.status(404).json({ success: false, message: "Patient not found" });
+        }
+        res.json({ success: true, patient });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const getPatientMedicalHistory = async (req, res) => {
+    try {
+        const patient = await User.findOne({ _id: req.params.id, role: "patient" }).select("name email medicalHistory");
+        if (!patient) {
+            return res.status(404).json({ success: false, message: "Patient not found" });
+        }
+        res.json({ success: true, medicalHistory: patient.medicalHistory });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const getPatientReports = async (req, res) => {
+    try {
+        const patient = await User.findOne({ _id: req.params.id, role: "patient" }).select("name email reports");
+        if (!patient) {
+            return res.status(404).json({ success: false, message: "Patient not found" });
+        }
+        res.json({ success: true, reports: patient.reports });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 const getAllAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find()
@@ -73,7 +104,6 @@ const getAllAppointments = async (req, res) => {
     }
 };
 
-// Get system stats
 const getStats = async (req, res) => {
     try {
         const totalPatients = await User.countDocuments({ role: "patient" });
@@ -100,6 +130,9 @@ module.exports = {
     approveDoctor,
     rejectDoctor,
     getAllPatients,
+    getPatientById,
+    getPatientMedicalHistory,
+    getPatientReports,
     getAllAppointments,
     getStats,
 };

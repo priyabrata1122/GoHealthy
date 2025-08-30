@@ -27,17 +27,24 @@ const UserSchema = new mongoose.Schema(
         profileImage: String,
 
         // Patient-specific
+        age: Number,
+        gender: { type: String, enum: ["male", "female", "other"] },
+        address: String,
+
         medicalHistory: [
             {
                 condition: String,
-                year: Number
-            }
+                diagnosisDate: Date, // more accurate than just "year"
+                treatment: String,
+            },
         ],
+
         reports: [
             {
-                url: String,
-                uploadedAt: Date
-            }
+                reportName: String,
+                reportUrl: String, // instead of just `url`, more descriptive
+                date: { type: Date, default: Date.now }, // auto-set upload time
+            },
         ],
 
         // Doctor-specific
