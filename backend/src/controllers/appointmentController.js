@@ -80,6 +80,10 @@ const getMyAppointments = async (req, res) => {
 // Patient: Cancel Appointment
 const cancelAppointment = async (req, res) => {
     try {
+        if (req.user.role !== "patient") {
+            return res.status(403).json({ success: false, message: "Only patients can cancel appointments" });
+        }
+
         const appointment = await Appointment.findById(req.params.id);
 
         if (!appointment) {
@@ -87,7 +91,7 @@ const cancelAppointment = async (req, res) => {
         }
 
         if (appointment.patient.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ success: false, message: "Not authorized" });
+            return res.status(403).json({ success: false, message: "Not authorized to cancel this appointment" });
         }
 
         appointment.status = "cancelled";
@@ -119,6 +123,10 @@ const getDoctorAppointments = async (req, res) => {
 // Doctor: Update Appointment Status
 const updateAppointmentStatus = async (req, res) => {
     try {
+        if (req.user.role !== "doctor") {
+            return res.status(403).json({ success: false, message: "Only doctors can update appointment status" });
+        }
+
         const { status } = req.body;
 
         const appointment = await Appointment.findById(req.params.id);
@@ -128,7 +136,7 @@ const updateAppointmentStatus = async (req, res) => {
         }
 
         if (appointment.doctor.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ success: false, message: "Not authorized" });
+            return res.status(403).json({ success: false, message: "Not authorized to update this appointment" });
         }
 
         appointment.status = status || appointment.status;

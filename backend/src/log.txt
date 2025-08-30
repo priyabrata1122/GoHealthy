@@ -71,3 +71,8 @@
 ::1 - - [30/Aug/2025:12:01:09 +0000] "PUT /api/appointments/68b2e662fc0cba6a41c6db09/status HTTP/1.1" 403 44 "-" "PostmanRuntime/7.45.0"
 ::1 - - [30/Aug/2025:12:01:31 +0000] "PUT /api/appointments/68b2e662fc0cba6a41c6db09/status HTTP/1.1" 403 44 "-" "PostmanRuntime/7.45.0"
 ::1 - - [30/Aug/2025:12:01:39 +0000] "PUT /api/appointments/68b2e699fc0cba6a41c6db17/status HTTP/1.1" 200 314 "-" "PostmanRuntime/7.45.0"
+::1 - - [30/Aug/2025:14:14:42 +0000] "GET /api/appointments/my HTTP/1.1" 200 34 "-" "PostmanRuntime/7.45.0"
+::1 - - [30/Aug/2025:14:15:09 +0000] "GET /api/auth/logout HTTP/1.1" 200 52 "-" "PostmanRuntime/7.45.0"
+::1 - - [30/Aug/2025:14:15:29 +0000] "POST /api/auth/login HTTP/1.1" 200 163 "-" "PostmanRuntime/7.45.0"
+::1 - - [30/Aug/2025:14:15:46 +0000] "POST /api/auth/login HTTP/1.1" 200 154 "-" "PostmanRuntime/7.45.0"
+::1 - - [30/Aug/2025:14:16:33 +0000] "GET /api/appointments/my HTTP/1.1" 200 791 "-" "PostmanRuntime/7.45.0"
