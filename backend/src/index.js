@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.js");
 const doctorRoutes = require("./routes/doctorRoutes.js");
+const adminRoutes = require("./routes/adminRoutes.js");
 // const { errorHandler } = require("./middlewares/errorMiddleware.js");
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/doctors", doctorRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Test API
 app.get("/", (req, res) => {

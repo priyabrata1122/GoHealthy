@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
 
+//General Auth Middleware
 const protect = async (req, res, next) => {
     const token = req.cookies?.token;
 
@@ -17,4 +18,12 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports = { protect };
+// Admin Middleware
+const authorizeAdmin = (req, res, next) => {
+    if (req.user && req.user.role === "admin") {
+        return next();
+    }
+    return res.status(403).json({ success: false, message: "Access denied: Admins only" });
+};
+
+module.exports = { protect, authorizeAdmin };
