@@ -87,20 +87,34 @@ const cancelAppointment = async (req, res) => {
             return res.status(403).json({ success: false, message: "Only patients can cancel appointments" });
         }
 
-        const appointment = await Appointment.findById(req.params.id);
+        let appointment = await Appointment.findById(req.params.id).populate("patient doctor");
 
         if (!appointment) {
             return res.status(404).json({ success: false, message: "Appointment not found" });
         }
 
-        if (appointment.patient.toString() !== req.user._id.toString()) {
+        if (appointment.patient._id.toString() !== req.user._id.toString()) {
             return res.status(403).json({ success: false, message: "Not authorized to cancel this appointment" });
         }
 
         appointment.status = "cancelled";
         await appointment.save();
 
-        res.json({ success: true, appointment });
+        // ✅ Notify doctor that patient canceled
+        await sendEmail(
+            appointment.doctor.email,
+            "Appointment Cancelled - GoHealthy",
+            `Hello Dr. ${appointment.doctor.name},\n\nYour appointment with patient ${appointment.patient.name} on ${appointment.date} has been cancelled by the patient.\n\n- GoHealthy Team`
+        );
+
+        // ✅ Notify patient for confirmation
+        await sendEmail(
+            appointment.patient.email,
+            "Appointment Cancelled - GoHealthy",
+            `Hello ${appointment.patient.name},\n\nYour appointment with Dr. ${appointment.doctor.name} on ${appointment.date} has been successfully cancelled.\n\n- GoHealthy Team`
+        );
+
+        res.json({ success: true, message: "Appointment cancelled successfully", appointment });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -130,18 +144,24 @@ const updateAppointmentStatus = async (req, res) => {
 
         const { status } = req.body;
 
-        const appointment = await Appointment.findById(req.params.id);
+        let appointment = await Appointment.findById(req.params.id).populate("patient doctor");
 
         if (!appointment) {
             return res.status(404).json({ success: false, message: "Appointment not found" });
         }
 
-        if (appointment.doctor.toString() !== req.user._id.toString()) {
+        if (appointment.doctor._id.toString() !== req.user._id.toString()) {
             return res.status(403).json({ success: false, message: "Not authorized to update this appointment" });
         }
 
         appointment.status = status || appointment.status;
         await appointment.save();
+
+        await sendEmail(
+            appointment.patient.email,
+            "Appointment Status Update - GoHealthy",
+            `Hello ${appointment.patient.name},\n\nYour appointment with Dr. ${appointment.doctor.name} on ${appointment.date} is now marked as: ${appointment.status}.\n\n- GoHealthy Team`
+        );
 
         res.json({ success: true, appointment });
     } catch (error) {
