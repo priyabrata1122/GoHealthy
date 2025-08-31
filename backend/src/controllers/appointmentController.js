@@ -1,12 +1,10 @@
 const Appointment = require("../models/Appointment.js");
 const User = require("../models/User.js");
 
-// Patient: Book Appointment
 const bookAppointment = async (req, res) => {
     try {
         const { doctorId, date, notes } = req.body;
 
-        // Only patients can book
         if (req.user.role !== "patient") {
             return res.status(403).json({ success: false, message: "Only patients can book appointments" });
         }
@@ -17,18 +15,15 @@ const bookAppointment = async (req, res) => {
 
         const appointmentDate = new Date(date);
 
-        // Check if date is in the past
         if (appointmentDate < new Date()) {
             return res.status(400).json({ success: false, message: "Cannot book an appointment in the past" });
         }
 
-        // Check if doctor exists & is approved
         const doctor = await User.findOne({ _id: doctorId, role: "doctor", isApproved: true });
         if (!doctor) {
             return res.status(404).json({ success: false, message: "Doctor not found or not approved" });
         }
 
-        // Prevent double-booking for same doctor & time
         const existingAppointment = await Appointment.findOne({
             doctor: doctorId,
             date: appointmentDate,
@@ -39,7 +34,6 @@ const bookAppointment = async (req, res) => {
             return res.status(400).json({ success: false, message: "Doctor is not available at this time" });
         }
 
-        // Prevent patient from overlapping appointments
         const patientOverlap = await Appointment.findOne({
             patient: req.user._id,
             date: appointmentDate,
@@ -50,7 +44,6 @@ const bookAppointment = async (req, res) => {
             return res.status(400).json({ success: false, message: "You already have an appointment at this time" });
         }
 
-        // Create appointment
         const appointment = await Appointment.create({
             doctor: doctorId,
             patient: req.user._id,
@@ -64,7 +57,6 @@ const bookAppointment = async (req, res) => {
     }
 };
 
-// Patient: Get Own Appointments
 const getMyAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find({ patient: req.user._id })
@@ -77,7 +69,6 @@ const getMyAppointments = async (req, res) => {
     }
 };
 
-// Patient: Cancel Appointment
 const cancelAppointment = async (req, res) => {
     try {
         if (req.user.role !== "patient") {
@@ -103,7 +94,6 @@ const cancelAppointment = async (req, res) => {
     }
 };
 
-// Doctor: Get Their Appointments
 const getDoctorAppointments = async (req, res) => {
     try {
         if (req.user.role !== "doctor") {
@@ -120,7 +110,6 @@ const getDoctorAppointments = async (req, res) => {
     }
 };
 
-// Doctor: Update Appointment Status
 const updateAppointmentStatus = async (req, res) => {
     try {
         if (req.user.role !== "doctor") {

@@ -12,6 +12,7 @@ const doctorRoutes = require("./routes/doctorRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 const appointmentRoutes = require("./routes/appointmentRoutes.js");
 const patientRoutes = require("./routes/patientRoutes.js");
+const prescriptionRoutes = require("./routes/prescriptionRoutes.js");
 // const { errorHandler } = require("./middlewares/errorMiddleware.js");
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/patients", patientRoutes);
+app.use("/api/prescriptions", prescriptionRoutes);
 
 // Test API
 app.get("/", (req, res) => {
