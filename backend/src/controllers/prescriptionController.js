@@ -1,5 +1,6 @@
 const Prescription = require("../models/Prescription");
 const Appointment = require("../models/Appointment");
+const sendEmail = require("../utils/sendEmail");
 
 const createPrescription = async (req, res) => {
     try {
@@ -24,6 +25,14 @@ const createPrescription = async (req, res) => {
             medicines,
             notes,
         });
+
+        await prescription.save();
+
+        await sendEmail(
+            appointment.patient.email,
+            "New Prescription Available - GoHealthy",
+            `Hello ${appointment.patient.name},\n\nA new prescription has been issued by Dr. ${appointment.doctor.name}.\n\nPlease log in to GoHealthy to view your prescription.\n\n- GoHealthy Team`
+        );
 
         res.json({ success: true, prescription });
     } catch (error) {

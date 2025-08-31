@@ -1,5 +1,6 @@
 const User = require("../models/User.js");
 const Appointment = require("../models/Appointment.js");
+const sendEmail = require("../utils/sendEmail.js");
 
 const getAllDoctors = async (req, res) => {
     try {
@@ -26,6 +27,12 @@ const approveDoctor = async (req, res) => {
         doctor.isApproved = true;
         await doctor.save();
 
+        await sendEmail(
+            doctor.email,
+            "Doctor Approval - GoHealthy",
+            `Hello Dr. ${doctor.name},\n\nYour account has been approved by the admin. You can now accept appointments.\n\n- GoHealthy Team`
+        );
+
         res.json({ success: true, message: "Doctor approved", doctor });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -41,6 +48,12 @@ const rejectDoctor = async (req, res) => {
 
         doctor.isApproved = false;
         await doctor.save();
+
+        await sendEmail(
+            doctor.email,
+            "Doctor Application Rejected - GoHealthy",
+            `Hello Dr. ${doctor.name},\n\nWe regret to inform you that your application has been rejected by the admin.\n\n- GoHealthy Team`
+        );
 
         res.json({ success: true, message: "Doctor rejected", doctor });
     } catch (error) {
@@ -87,7 +100,13 @@ const getPatientReports = async (req, res) => {
         if (!patient) {
             return res.status(404).json({ success: false, message: "Patient not found" });
         }
-        res.json({ success: true, reports: patient.reports });
+
+        const reportsWithFullUrl = patient.reports.map((report) => ({
+            ...report.toObject(),
+            reportUrl: `${req.protocol}://${req.get("host")}${report.reportUrl}`
+        }));
+
+        res.json({ success: true, reports: reportsWithFullUrl });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

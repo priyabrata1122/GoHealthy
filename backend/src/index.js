@@ -40,6 +40,7 @@ const accessLogStream = fs.createWriteStream(
 );
 
 app.use(morgan("combined", { stream: accessLogStream }));
+app.use("/uploads", express.static("uploads"));
 
 // app.use(morgan("dev"));
 

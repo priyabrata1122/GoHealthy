@@ -1,6 +1,6 @@
 const Appointment = require("../models/Appointment.js");
 const User = require("../models/User.js");
-
+const sendEmail = require("../utils/sendEmail.js");
 const bookAppointment = async (req, res) => {
     try {
         const { doctorId, date, notes } = req.body;
@@ -50,6 +50,18 @@ const bookAppointment = async (req, res) => {
             date: appointmentDate,
             notes,
         });
+
+        await sendEmail(
+            req.user.email,
+            "Appointment Confirmation - GoHealthy",
+            `Hello ${req.user.name},\n\nYour appointment with Dr. ${doctor.name} has been booked successfully for ${date}.\n\n- GoHealthy Team`
+        );
+
+        await sendEmail(
+            doctor.email,
+            "New Appointment Booked - GoHealthy",
+            `Hello ${doctor.name},\n\nYou have a new appointment with patient ${req.user.name} on ${date}.\n\n- GoHealthy Team`
+        );
 
         res.status(201).json({ success: true, appointment });
     } catch (error) {
