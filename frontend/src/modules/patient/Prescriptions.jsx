@@ -7,7 +7,7 @@ const Prescriptions = () => {
     useEffect(() => {
         const fetchPrescriptions = async () => {
             const res = await api.get("/prescriptions/my");
-            console.log(res.data.prescriptions);
+            // console.log(res.data.prescriptions);
             setPrescriptions(res.data.prescriptions); // ✅ set full array
         };
         fetchPrescriptions();

@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import { Calendar, User, CheckCircle, Clock } from "lucide-react";
+import { Calendar, User } from "lucide-react";
 
 const MyAppointments = () => {
     const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(null);
 
     useEffect(() => {
         const fetchAppointments = async () => {
-            const res = await api.get("/appointments/my");
-            // console.log(res.data.appointments);
-            setAppointments(res.data.appointments);
+            try {
+                const res = await api.get("/appointments/my");
+                setAppointments(res.data.appointments || []);
+            } catch (err) {
+                console.error("Error fetching appointments:", err);
+            }
         };
         fetchAppointments();
     }, []);
+
+    const handleCancel = async (id) => {
+        try {
+            setLoading(id);
+            await api.put(`/appointments/${id}/cancel`);
+            setAppointments((prev) =>
+                prev.map((appt) =>
+                    appt._id === id ? { ...appt, status: "cancelled" } : appt
+                )
+            );
+        } catch (err) {
+            console.error("Error cancelling appointment:", err);
+        } finally {
+            setLoading(null);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 px-6 py-10">
@@ -45,19 +65,34 @@ const MyAppointments = () => {
                                     </p>
                                 </div>
 
-                                {/* Status Badge */}
-                                <div className="mt-4 md:mt-0">
+                                {/* Right Section */}
+                                <div className="mt-4 md:mt-0 flex flex-col items-end gap-3">
                                     <span
                                         className={`px-4 py-2 rounded-full text-sm font-medium ${appt.status === "confirmed"
                                             ? "bg-green-100 text-green-700"
                                             : appt.status === "pending"
                                                 ? "bg-yellow-100 text-yellow-700"
-                                                : "bg-red-100 text-red-700"
+                                                : appt.status === "cancelled"
+                                                    ? "bg-red-100 text-red-700"
+                                                    : "bg-gray-100 text-gray-700"
                                             }`}
                                     >
                                         {appt.status.charAt(0).toUpperCase() +
                                             appt.status.slice(1)}
                                     </span>
+
+                                    {appt.status !== "cancelled" && (
+                                        <button
+                                            onClick={() => handleCancel(appt._id)}
+                                            disabled={loading === appt._id}
+                                            className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition ${loading === appt._id
+                                                ? "bg-gray-400 cursor-not-allowed"
+                                                : "bg-red-600 hover:bg-red-700"
+                                                }`}
+                                        >
+                                            {loading === appt._id ? "Cancelling..." : "Cancel Appointment"}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}

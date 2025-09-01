@@ -17,9 +17,12 @@ import MedicalHistory from "./modules/patient/MedicalHistory";
 import Prescriptions from "./modules/patient/Prescriptions";
 import ReportsList from "./modules/patient/ReportsList";
 
+// Doctor Routes
 import DoctorDashboard from "./modules/doctor/DoctorDashboard";
 import DoctorProfile from "./modules/doctor/DoctorProfile";
 import DoctorAppointments from "./modules/doctor/MyAppointments";
+import GetPrescriptions from "./modules/doctor/GetPrescriptions";
+import CreatePrescription from "./modules/doctor/CreatePrescription";
 
 const router = createBrowserRouter([
     { path: "/", element: <><Navbar /><Home /></> },
@@ -115,6 +118,22 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute role="doctor">
                 <><Navbar /><DoctorAppointments /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/doctor/prescriptions",
+        element: (
+            <ProtectedRoute role="doctor">
+                <><Navbar /><GetPrescriptions /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/doctor/create-prescription",
+        element: (
+            <ProtectedRoute role="doctor">
+                <><Navbar /><CreatePrescription /></>
             </ProtectedRoute>
         ),
     },
