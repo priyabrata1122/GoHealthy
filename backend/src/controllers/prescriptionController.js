@@ -10,18 +10,21 @@ const createPrescription = async (req, res) => {
 
         const { appointmentId, medicines, notes } = req.body;
 
-        const appointment = await Appointment.findById(appointmentId);
+        const appointment = await Appointment.findById(appointmentId)
+            .populate("patient", "name email")
+            .populate("doctor", "name");
+
         if (!appointment) {
             return res.status(404).json({ success: false, message: "Appointment not found" });
         }
-        if (appointment.doctor.toString() !== req.user._id.toString()) {
+        if (appointment.doctor._id.toString() !== req.user._id.toString()) {
             return res.status(403).json({ success: false, message: "Not authorized for this appointment" });
         }
 
         const prescription = await Prescription.create({
             appointment: appointmentId,
             doctor: req.user._id,
-            patient: appointment.patient,
+            patient: appointment.patient._id, // save only patient ID
             medicines,
             notes,
         });
