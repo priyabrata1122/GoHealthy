@@ -5,41 +5,98 @@ const Navbar = () => {
     const { user, logout } = useAuth();
 
     return (
-        <nav className="flex justify-between items-center bg-white shadow px-6 py-3">
-            <Link to="/" className="font-bold text-lg">GoHealthy</Link>
+        <nav className="bg-white shadow-md sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+                {/* Brand */}
+                <Link
+                    to="/"
+                    className="text-2xl font-extrabold text-green-600 tracking-tight hover:text-green-700 transition-colors"
+                >
+                    GoHealthy
+                </Link>
 
-            <div className="flex gap-4 items-center">
-                {!user && (
-                    <>
-                        <Link to="/login" className="hover:underline">Login</Link>
-                        <Link to="/register" className="hover:underline">Register</Link>
-                    </>
-                )}
+                {/* Links */}
+                <div className="flex items-center gap-6">
+                    {!user && (
+                        <>
+                            <Link
+                                to="/login"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                to="/register"
+                                className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 shadow-sm transition"
+                            >
+                                Register
+                            </Link>
+                        </>
+                    )}
 
-                {user?.role === "patient" && (
-                    <>
-                        <Link to="/patient/dashboard" className="hover:underline">Dashboard</Link>
-                        <Link to="/patient/profile" className="hover:underline">Profile</Link>
-                        <Link to="/patient/book" className="hover:underline">Book</Link>
-                        <Link to="/patient/appointments" className="hover:underline">Appointments</Link>
-                        <Link to="/patient/reports" className="hover:underline">Reports</Link>
-                        <Link to="/patient/history" className="hover:underline">History</Link>
-                    </>
-                )}
+                    {user?.role === "patient" && (
+                        <>
+                            <Link
+                                to="/patient/dashboard"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Dashboard
+                            </Link>
+                            {/* <Link
+                                to="/patient/profile"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Profile
+                            </Link> */}
+                            {/* <Link
+                                to="/patient/book"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Book
+                            </Link> */}
+                            {/* <Link
+                                to="/patient/appointments"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Appointments
+                            </Link> */}
+                            {/* <Link
+                                to="/patient/reports"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                Reports
+                            </Link> */}
+                            {/* <Link
+                                to="/patient/history"
+                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                            >
+                                History
+                            </Link> */}
+                        </>
+                    )}
 
-                {user && (
-                    <>
-                        <span className="text-sm text-gray-600">
-                            Hi, {user.name} ({user.role})
-                        </span>
-                        <button
-                            onClick={logout}
-                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                        >
-                            Logout
-                        </button>
-                    </>
-                )}
+                    {user?.role === "doctor" && (
+                        <>
+                            <Link to="/doctor/dashboard" className="hover:underline">Dashboard</Link>
+                            <Link to="/doctor/profile" className="hover:underline">Profile</Link>
+                            <Link to="/doctor/appointments" className="hover:underline">Appointments</Link>
+                        </>
+                    )}
+
+                    {user && (
+                        <div className="flex items-center gap-4">
+                            <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                                Hi, <span className="font-medium">{user.name}</span> ( {user.role.toUpperCase()} )
+                            </span>
+                            <button
+                                onClick={logout}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 shadow-sm transition"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </nav>
     );

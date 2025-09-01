@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import { useAuth } from "./context/AuthContext";
 
+import ProtectedRoute from "./router/ProtectedRoute";
+
 // Patient pages
 import PatientDashboard from "./modules/patient/PatientDashboard";
 import PatientProfile from "./modules/patient/PatientProfile";
@@ -12,14 +14,19 @@ import BookAppointment from "./modules/patient/BookAppointment";
 import MyAppointments from "./modules/patient/MyAppointments";
 import UploadReports from "./modules/patient/UploadReports";
 import MedicalHistory from "./modules/patient/MedicalHistory";
-import ProtectedRoute from "./router/ProtectedRoute";
+import Prescriptions from "./modules/patient/Prescriptions";
+import ReportsList from "./modules/patient/ReportsList";
+
+import DoctorDashboard from "./modules/doctor/DoctorDashboard";
+import DoctorProfile from "./modules/doctor/DoctorProfile";
+import DoctorAppointments from "./modules/doctor/MyAppointments";
 
 const router = createBrowserRouter([
     { path: "/", element: <><Navbar /><Home /></> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
 
-    // 🟢 Patient Routes
+    // Patient Routes
     {
         path: "/patient/dashboard",
         element: (
@@ -65,6 +72,49 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute role="patient">
                 <><Navbar /><MedicalHistory /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/patient/getreports",
+        element: (
+            <ProtectedRoute role="patient">
+                <><Navbar /><ReportsList /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/patient/prescriptions",
+        element: (
+            <ProtectedRoute role="patient">
+                <><Navbar /><Prescriptions /></>
+            </ProtectedRoute>
+        ),
+    },
+
+
+    //Doctor Route
+    {
+        path: "/doctor/dashboard",
+        element: (
+            <ProtectedRoute role="doctor">
+                <><Navbar /><DoctorDashboard /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/doctor/profile",
+        element: (
+            <ProtectedRoute role="doctor">
+                <><Navbar /><DoctorProfile /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/doctor/appointments",
+        element: (
+            <ProtectedRoute role="doctor">
+                <><Navbar /><DoctorAppointments /></>
             </ProtectedRoute>
         ),
     },

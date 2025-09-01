@@ -23,40 +23,54 @@ const Register = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-50">
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md w-80">
-                <h2 className="text-lg font-bold mb-4">Register</h2>
-                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-3 border rounded-md"
-                    required
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-3 border rounded-md"
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={form.password}
-                    onChange={handleChange}
-                    className="w-full p-2 mb-3 border rounded-md"
-                    required
-                />
-                <button className="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-700">
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100">
+            <form
+                onSubmit={handleSubmit}
+                className="bg-white p-8 rounded-2xl shadow-lg w-96 border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+            >
+                <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    Create an Account
+                </h2>
+                {error && (
+                    <p className="text-red-500 text-sm mb-4 text-center bg-red-50 py-2 rounded-md">
+                        {error}
+                    </p>
+                )}
+                <div className="space-y-4">
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Full Name"
+                        value={form.name}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                        required
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        value={form.email}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={form.password}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                        required
+                    />
+                </div>
+                <button
+                    className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md hover:shadow-lg"
+                >
                     Register
                 </button>
+                
             </form>
         </div>
     );
