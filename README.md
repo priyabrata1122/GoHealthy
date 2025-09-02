@@ -48,8 +48,8 @@ It provides a **centralized platform** for managing doctors, patients, and appoi
 
 ## 🚀 Future Enhancements
 
-✅ Appointment reminders via email/SMS
-✅ Payment gateway for consultations
-✅ AI-powered health insights
+- ✅ Appointment reminders via email/SMS
+- ✅ Payment gateway for consultations
+- ✅ AI-powered health insights
 
 ---
