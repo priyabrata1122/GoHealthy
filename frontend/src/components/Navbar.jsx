@@ -35,22 +35,30 @@ const Navbar = () => {
                     )}
 
                     {user?.role === "patient" && (
-                        <>
-                            <Link
-                                to="/patient/dashboard"
-                                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-                            >
-                                Dashboard
-                            </Link>
-                        </>
+                        <Link
+                            to="/patient/dashboard"
+                            className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                        >
+                            Dashboard
+                        </Link>
                     )}
 
                     {user?.role === "doctor" && (
-                        <>
-                            <Link to="/doctor/dashboard" className="hover:underline">Dashboard</Link>
-                            {/* <Link to="/doctor/profile" className="hover:underline">Profile</Link>
-                            <Link to="/doctor/appointments" className="hover:underline">Appointments</Link> */}
-                        </>
+                        <Link
+                            to="/doctor/dashboard"
+                            className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+
+                    {user?.role === "admin" && (
+                        <Link
+                            to="/admin/dashboard"
+                            className="text-gray-700 hover:text-green-600 font-medium transition-colors"
+                        >
+                            Dashboard
+                        </Link>
                     )}
 
                     {user && (

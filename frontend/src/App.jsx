@@ -24,6 +24,13 @@ import DoctorAppointments from "./modules/doctor/MyAppointments";
 import GetPrescriptions from "./modules/doctor/GetPrescriptions";
 import CreatePrescription from "./modules/doctor/CreatePrescription";
 
+// Admin Routes
+import AdminDashboard from "./modules/admin/AdminDashboard";
+import GetPatients from "./modules/admin/GetPatients";
+import GetDoctors from "./modules/admin/GetDoctors";
+import GetAppointments from "./modules/admin/GetAppointments";
+import GetStatistics from "./modules/admin/GetStatistics";
+
 const router = createBrowserRouter([
     { path: "/", element: <><Navbar /><Home /></> },
     { path: "/login", element: <Login /> },
@@ -134,6 +141,48 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute role="doctor">
                 <><Navbar /><CreatePrescription /></>
+            </ProtectedRoute>
+        ),
+    },
+
+    //Admin Route
+    {
+        path: "/admin/dashboard",
+        element: (
+            <ProtectedRoute role="admin">
+                <><Navbar /><AdminDashboard /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/admin/patients",
+        element: (
+            <ProtectedRoute role="admin">
+                <><Navbar /><GetPatients /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/admin/doctors",
+        element: (
+            <ProtectedRoute role="admin">
+                <><Navbar /><GetDoctors /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/admin/appointments",
+        element: (
+            <ProtectedRoute role="admin">
+                <><Navbar /><GetAppointments /></>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/admin/stats",
+        element: (
+            <ProtectedRoute role="admin">
+                <><Navbar /><GetStatistics /></>
             </ProtectedRoute>
         ),
     },
