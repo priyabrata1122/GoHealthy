@@ -33,8 +33,8 @@ import GetStatistics from "./modules/admin/GetStatistics";
 
 const router = createBrowserRouter([
     { path: "/", element: <><Navbar /><Home /></> },
-    { path: "/login", element: <Login /> },
-    { path: "/register", element: <Register /> },
+    { path: "/login", element: <><Navbar /><Login /></> },
+    { path: "/register", element: <><Navbar /><Register /></> },
 
     // Patient Routes
     {
