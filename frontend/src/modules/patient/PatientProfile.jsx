@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import { User, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
 
 const PatientProfile = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -37,10 +40,13 @@ const PatientProfile = () => {
         setLoading(true);
         try {
             await api.put("/patients/profile", form);
-            alert("Profile updated successfully");
+            toast("Profile updated successfully");
+            setTimeout(() => {
+                navigate("/patient/dashboard");
+            }, 1000);
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("Something went wrong. Please try again.");
+            toast("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -153,8 +159,8 @@ const PatientProfile = () => {
                         type="submit"
                         disabled={loading}
                         className={`w-full py-3 rounded-lg font-semibold transition shadow-md ${loading
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-green-600 hover:bg-green-700 text-white"
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-green-600 hover:bg-green-700 text-white"
                             }`}
                     >
                         {loading ? "Updating..." : "Update Profile"}

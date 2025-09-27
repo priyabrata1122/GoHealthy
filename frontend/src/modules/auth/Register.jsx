@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Register = () => {
     const { register } = useAuth();
@@ -16,9 +17,13 @@ const Register = () => {
         e.preventDefault();
         try {
             await register(form);
-            navigate("/");
+            toast("Sign Up successful");
+            setTimeout(() => {
+                navigate("/");
+            }, 800);
         } catch (err) {
             setError("Registration failed");
+            toast("Registration failed");
         }
     };
 
@@ -70,7 +75,7 @@ const Register = () => {
                 >
                     Register
                 </button>
-                
+
             </form>
         </div>
     );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
     const { login } = useAuth();
@@ -16,9 +17,13 @@ const Login = () => {
         e.preventDefault();
         try {
             await login(form.email, form.password);
-            navigate("/");
+            toast("Login Successful");
+            setTimeout(() => {
+                navigate("/");
+            }, 800);
         } catch (err) {
             setError("Invalid credentials");
+            toast("Invalid credentials");
         }
     };
 
@@ -61,7 +66,7 @@ const Login = () => {
                 >
                     Login
                 </button>
-                
+
             </form>
         </div>
     );
