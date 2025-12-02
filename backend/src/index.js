@@ -23,22 +23,25 @@ connectDB();
 const app = express();
 
 // Middlewares
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "https://go-healthy-gamma.vercel.app",
+    "http://localhost:5173"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(cookieParser());
 
 // Write stream to record the log files
 const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, "log.txt"),
-    { flags: "a" }
+  path.join(__dirname, "log.txt"),
+  { flags: "a" }
 );
 
 app.use(morgan("combined", { stream: accessLogStream }));
@@ -56,7 +59,7 @@ app.use("/api/prescriptions", prescriptionRoutes);
 
 // Test API
 app.get("/", (req, res) => {
-    res.send("Healthcare API is running...");
+  res.send("Healthcare API is running...");
 });
 
 // Error handler
@@ -64,5 +67,5 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
