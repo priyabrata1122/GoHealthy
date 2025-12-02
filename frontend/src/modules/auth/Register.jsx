@@ -24,6 +24,7 @@ const Register = () => {
         } catch (err) {
             setError("Registration failed");
             toast("Registration failed");
+            console.log(err);
         }
     };
 
